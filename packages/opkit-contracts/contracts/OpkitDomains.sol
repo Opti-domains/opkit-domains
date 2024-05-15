@@ -25,9 +25,13 @@ contract OpkitDomains {
 
     // Function to register a new domain
     function register(string memory domain, address owner, string[] memory keys, string[] memory values) public {
-        require(domains[domain].owner == address(0), "Domain already registered");
-        domains[domain].owner = owner;
-        emit DomainRegistered(domain, owner);
+        require(owner != address(0), "Null address");
+        require(domains[domain].owner == address(0) || domains[domain].owner == owner, "Domain already registered");
+
+        if (domains[domain].owner == address(0)) {
+            domains[domain].owner = owner;
+            emit DomainRegistered(domain, owner);
+        }
 
         uint256 keysLength = keys.length;
         require(keysLength == values.length, "Not eq length");
