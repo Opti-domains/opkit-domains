@@ -6,7 +6,6 @@ contract OpkitDomains {
     struct Domain {
         address owner;
         mapping(string => string) stringRecords;
-        mapping(string => address) addressRecords;
     }
 
     // Mapping from domain name to Domain struct
@@ -18,9 +17,6 @@ contract OpkitDomains {
     // Event emitted when a string record is updated
     event StringRecordUpdated(string domain, string key, string newValue);
 
-    // Event emitted when an address record is updated
-    event AddressRecordUpdated(string domain, string key, address newValue);
-
     // Modifier to check if the sender is the owner of the domain
     modifier onlyOwner(string memory domain) {
         require(domains[domain].owner == msg.sender, "Caller is not the owner");
@@ -28,10 +24,20 @@ contract OpkitDomains {
     }
 
     // Function to register a new domain
-    function registerDomain(string memory domain) public {
+    function register(string memory domain, address owner, string[] memory keys, string[] memory values) public {
         require(domains[domain].owner == address(0), "Domain already registered");
-        domains[domain].owner = msg.sender;
-        emit DomainRegistered(domain, msg.sender);
+        domains[domain].owner = owner;
+        emit DomainRegistered(domain, owner);
+
+        uint256 keysLength = keys.length;
+        require(keysLength == values.length, "Not eq length");
+
+        unchecked {
+            for (uint256 i = 0; i < keysLength; i++) {
+                domains[domain].stringRecords[keys[i]] = values[i];
+                emit StringRecordUpdated(domain, keys[i], values[i]);
+            }
+        }
     }
 
     // Function to update the string record of an existing domain
@@ -40,20 +46,9 @@ contract OpkitDomains {
         emit StringRecordUpdated(domain, key, value);
     }
 
-    // Function to update the address record of an existing domain
-    function updateAddressRecord(string memory domain, string memory key, address value) public onlyOwner(domain) {
-        domains[domain].addressRecords[key] = value;
-        emit AddressRecordUpdated(domain, key, value);
-    }
-
     // Function to get the string record of a domain
     function getStringRecord(string memory domain, string memory key) public view returns (string memory) {
         return domains[domain].stringRecords[key];
-    }
-
-    // Function to get the address record of a domain
-    function getAddressRecord(string memory domain, string memory key) public view returns (address) {
-        return domains[domain].addressRecords[key];
     }
 
     // Function to get the owner of a domain
