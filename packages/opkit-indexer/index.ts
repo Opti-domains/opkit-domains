@@ -200,12 +200,31 @@ const main = async () => {
     app.get('/domains/:owner', (req, res) => {
         const { owner } = req.params;
         const timestamp = parseTimestamp(req);
-        db.all(`SELECT domain FROM domains WHERE owner = ? AND timestamp <= ? ORDER BY timestamp DESC`, [owner, timestamp], (err, rows: DomainRow[]) => {
+        db.all(`SELECT domain, owner FROM domains WHERE owner = ? AND timestamp <= ? ORDER BY timestamp DESC`, [owner, timestamp], (err, domains: DomainRow[]) => {
             if (err) {
                 res.status(500).json({ error: err.message });
                 return;
             }
-            res.json(rows.map(row => row.domain));
+
+            const domainDetails = domains.map(async (domainRow: DomainRow) => {
+                return new Promise((resolve, reject) => {
+                    db.all(`SELECT key, value FROM string_records WHERE domain = ? AND timestamp <= ? ORDER BY timestamp DESC`, [domainRow.domain, timestamp], (err, stringRecords: StringRecordRow[]) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve({
+                                domain: domainRow.domain,
+                                owner: domainRow.owner,
+                                stringRecords: Object.fromEntries(stringRecords.map(record => [record.key, record.value])),
+                            });
+                        }
+                    });
+                });
+            });
+
+            Promise.all(domainDetails)
+                .then(results => res.json(results))
+                .catch(error => res.status(500).json({ error: error.message }));
         });
     });
 
@@ -245,7 +264,34 @@ const main = async () => {
                 res.status(500).json({ error: err.message });
                 return;
             }
-            res.json(rows.map(row => row.domain));
+
+            const domainDetails = rows.map(async (row: StringRecordRow) => {
+                return new Promise((resolve, reject) => {
+                    db.get(`SELECT owner FROM domains WHERE domain = ? AND timestamp <= ? ORDER BY timestamp DESC LIMIT 1`, [row.domain, timestamp], (err, owner: { owner: string } | undefined) => {
+                        if (err) {
+                            reject(err);
+                        } else if (!owner) {
+                            reject(new Error("Domain not found"));
+                        } else {
+                            db.all(`SELECT key, value FROM string_records WHERE domain = ? AND timestamp <= ? ORDER BY timestamp DESC`, [row.domain, timestamp], (err, stringRecords: StringRecordRow[]) => {
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    resolve({
+                                        domain: row.domain,
+                                        owner: owner.owner,
+                                        stringRecords: Object.fromEntries(stringRecords.map(record => [record.key, record.value])),
+                                    });
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+
+            Promise.all(domainDetails)
+                .then(results => res.json(results))
+                .catch(error => res.status(500).json({ error: error.message }));
         });
     });
 
