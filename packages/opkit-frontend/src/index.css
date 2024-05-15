@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.sui-connect-button > * > button, .sui-connect-button > * > .wkit-connected-container {
+  width: 100%;
+  max-width: 480px;
+}
+
+.wkit-connected-button__balance {
+  text-align: left;
+}
+
+.glowing-btn {
+  position: relative;
+  z-index: 0;
+}
+
+.glowing-btn:before {
+  content: '';
+  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+  position: absolute;
+  top: -2px;
+  left:-2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 1;
+  transition: opacity .3s ease-in-out;
+  border-radius: 10px;
+}
+
+/* .glowing-btn:active:after {
+  background: transparent;
+} */
+
+.glowing-btn:after {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+.glowing-red:after {
+  background: rgb(69, 10, 10);
+}
+
+@keyframes glowing {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+}
+
+.whitelisted-collections-list a {
+  text-decoration: underline;
+}
+
+.whitelisted-collections-list a:hover {
+  opacity: 0.9;
+}
+
+.connect-button > div > button{
+  background: #1F242F !important;
+  color:#CECFD2 !important
+ }
+
+ .connect-button > div > button > div:nth-child(2){
+  background: #1F242F !important;
+  color:#CECFD2 !important;
+  border-color: transparent;
+ }
+
+ .text-gradient{
+  /* Text lg/Bold */
+font-family: Inter;
+font-size: 18px;
+font-style: normal;
+font-weight: 700;
+line-height: 28px; /* 155.556% */
+background: -webkit-linear-gradient(45deg,#39A0FF, #8FFF85);
+background-clip: text;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+ }
+ .ant-modal-content{
+  background: #0C111D !important;
+ }
+ .ant-modal-header{
+  background: transparent !important;
+ }
