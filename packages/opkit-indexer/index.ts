@@ -259,7 +259,7 @@ const main = async () => {
     app.get('/string-records/:key/:value', (req, res) => {
         const { key, value } = req.params;
         const timestamp = parseTimestamp(req);
-        db.all(`SELECT domain FROM string_records WHERE key = ? AND value = ? AND timestamp <= ? ORDER BY timestamp DESC`, [key, value, timestamp], (err, rows: StringRecordRow[]) => {
+        db.all(`SELECT DISTINCT domain FROM string_records WHERE key = ? AND value = ? AND timestamp <= ? ORDER BY timestamp DESC`, [key, value, timestamp], (err, rows: StringRecordRow[]) => {
             if (err) {
                 res.status(500).json({ error: err.message });
                 return;
