@@ -20,11 +20,18 @@ export const Accordion = ({
   }, [isConnected, address]);
   return (
     <div className="text-white w-full">
-      <div className="w-full text-left border-b border-none bg-[#161B26] rounded-xl p-6 transition-all">
+      <div className="w-full text-left border border-[#D0D5DD] bg-white rounded-xl p-6 transition-all">
         <div className="flex justify-between items-center">
-          <div className="text-lg text-white font-semibold flex gap-3">
-            <div>{number}.</div>
-            <div>{title}</div>
+          <div className="text-lg text-[#101828] font-semibold flex gap-3">
+            <div className="bg-[#0C111D] text-white w-9 h-9 rounded-full flex justify-center items-center">
+              {number}.
+            </div>
+            <div>
+              <div>{title}</div>
+              <div className={`text-base text-[#344054] font-normal`}>
+                {subtitle}
+              </div>
+            </div>
           </div>
           <svg
             className={`transform transition-transform duration-500 ${
@@ -46,9 +53,8 @@ export const Accordion = ({
           </svg>
         </div>
 
-        <div className={`pl-6 text-base text-[#F5F5F6]`}>{subtitle}</div>
         <div
-          className={`${isOpen ? "block" : "hidden"} text-base text-[#F5F5F6]`}
+          className={`${isOpen ? "block" : "hidden"} text-base text-[#344054]`}
         >
           {children}
         </div>

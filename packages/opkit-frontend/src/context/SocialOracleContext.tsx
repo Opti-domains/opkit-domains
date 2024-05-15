@@ -44,9 +44,11 @@ export const socialOracleReducer = (
         ];
       }
 
-    case "RESET": return []
+    case "RESET":
+      return [];
 
-    case "LOAD": return action.data as ISocialOracleState[]
+    case "LOAD":
+      return action.data as ISocialOracleState[];
 
     default:
       return state;

@@ -21,7 +21,7 @@ const truncateAddress = (address: string | undefined) => {
   return `${address.slice(0, 6)}...${address.slice(-5)}`;
 };
 
-function AptosButtonUnstyled(props: any) {
+function CelestiaButtonUnstyled(props: any) {
   const { domainName, state, dispatch } = useContext(DomainConnectContext);
   const [walletSelectorModalOpen, setWalletSelectorModalOpen] = useState(false);
   const { connect, disconnect, account, wallets, connected, signMessage } =
@@ -30,13 +30,13 @@ function AptosButtonUnstyled(props: any) {
   let walletState: ISocialOracleState =
     state && state.find((x: ISocialOracleState) => x.provider == "wallet:637");
 
-  if (props.existing && props.existing != '0x') {
+  if (props.existing && props.existing != "0x") {
     walletState = {
       provider: "wallet:637",
       identity: props.existing,
       displayName: props.existing,
       refUid: import.meta.env.VITE_WALLET_REF_ID,
-    }
+    };
   }
 
   const onWalletButtonClick = () => {
@@ -66,7 +66,7 @@ function AptosButtonUnstyled(props: any) {
       console.log(
         generateSignMessage(
           domainName,
-          "aptos",
+          "celestia",
           637,
           account?.address as string,
           timestamp
@@ -76,7 +76,7 @@ function AptosButtonUnstyled(props: any) {
       const payload = {
         message: generateSignMessage(
           domainName,
-          "aptos",
+          "celestia",
           637,
           account?.address as string,
           timestamp
@@ -95,7 +95,7 @@ function AptosButtonUnstyled(props: any) {
 
       // Generate attestation
       const response = await axios.post(
-        import.meta.env.VITE_SOCIAL_ORACLE_ENDPOINT + "/wallet/aptos/verify",
+        import.meta.env.VITE_SOCIAL_ORACLE_ENDPOINT + "/wallet/celestia/verify",
         {
           domainName,
           publicKey: account?.publicKey as string,
@@ -134,10 +134,10 @@ function AptosButtonUnstyled(props: any) {
       <div className="flex justify-between items-center mt-8">
         <div className="flex gap-2 w-40">
           <div>
-            <img src="/images/aptos.png" className="w-10 h-10" alt="" />
+            <img src="/images/celestia.svg" className="w-10 h-10" alt="" />
           </div>
           <div>
-            <div className="font-medium text-[#F5F5F6]">Aptos</div>
+            <div className="font-medium text-[#F5F5F6]">Celestia</div>
             <div className="mt-1 text-[#94969C] text-xs">
               {walletState
                 ? addressEllipsis(walletState.displayName)
@@ -163,7 +163,9 @@ function AptosButtonUnstyled(props: any) {
         )}
       </div>
       <Modal
-        title={<div className="wallet-modal-title">Connect Aptos Wallet</div>}
+        title={
+          <div className="wallet-modal-title">Connect Celestia Wallet</div>
+        }
         centered
         open={walletSelectorModalOpen}
         onCancel={() => setWalletSelectorModalOpen(false)}
@@ -217,7 +219,7 @@ function AptosButtonUnstyled(props: any) {
   );
 }
 
-export default styled(AptosButtonUnstyled)`
+export default styled(CelestiaButtonUnstyled)`
   .ant-menu {
     border: none !important;
   }
@@ -282,10 +284,10 @@ export default styled(AptosButtonUnstyled)`
   }
 `;
 
-// export default function AptosButton() {
+// export default function CelestiaButton() {
 //   return (
-//     <ActionButton color="white" background="black" icon={aptosIcon}>
-//       Connect Aptos Wallet
+//     <ActionButton color="white" background="black" icon={CelestiaIcon}>
+//       Connect Celestia Wallet
 //     </ActionButton>
 //   );
 // }

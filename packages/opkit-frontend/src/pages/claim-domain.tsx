@@ -3,9 +3,10 @@ import { Modal, message } from "antd";
 import axios from "axios";
 import { ethers } from "ethers";
 import { useCallback, useEffect, useState } from "react";
-import AptosButton from "src/components/action-buttons/connect-wallet/Aptos";
 import SuiButton from "src/components/action-buttons/connect-wallet/Sui";
+import CelestiaButton from "src/components/action-buttons/connect-wallet/celestia";
 import { Accordion } from "src/components/common/Accordion";
+import { ChainChip } from "src/components/common/ChainChip";
 import { ChainIcon } from "src/components/common/ChainIcon";
 import { ConnectWallet } from "src/components/common/ConnectWallet";
 import { CardDomain } from "src/components/domain/CardDomain";
@@ -31,7 +32,6 @@ import {
   useWalletClient,
 } from "wagmi";
 import OPTownAirdropABI from "../abi/OPTownAirdrop.json";
-import { ChainChip } from "src/components/common/ChainChip";
 
 const AddressResolverABI = [
   {
@@ -701,7 +701,7 @@ export default function ClaimDomain() {
 
   let airdropBaseAmount = airdropAmount;
 
-  if (!isOP || (remainingBudget == 0/*&& rewardInfo && !rewardInfo[2]*/)) {
+  if (!isOP || remainingBudget == 0 /*&& rewardInfo && !rewardInfo[2]*/) {
     multiplier = 0;
     airdropAmount = 0;
   }
@@ -766,15 +766,13 @@ export default function ClaimDomain() {
 
   return (
     <DomainConnectContext.Provider value={{ domainName, state, dispatch }}>
-      <div className="min-h-screen bg-red-900 text-white selection:bg-indigo-500 selection:text-white">
-        <div className="fixed z-[100] flex w-full flex-col bg-gray-800/40 p-2 md:p-3 backdrop-blur-xl">
+      <div className="min-h-screen bg-white bg-[url('/images/gradient.png')] bg-cover text-white selection:bg-indigo-500 selection:text-white">
+        <div className="fixed z-[100] flex w-full flex-col bg-white/50 p-2 md:p-3 backdrop-blur-xl">
           <div className="flex items-center container mx-auto">
             <div className="flex items-center flex-grow">
-              <a href="/">
-                <img
-                  src={"/infinity-op-circle.png"}
-                  style={{ width: 48, height: 48 }}
-                />
+              <a href="/" className="flex justify-center gap-2">
+                <img src={"/images/logo.svg"} style={{ height: 48 }} />
+                <img src={"/images/logo-text.svg"} style={{ height: 48 }} />
               </a>
             </div>
             <ConnectWallet />
@@ -869,12 +867,6 @@ export default function ClaimDomain() {
           </div>
         </div>
         <main className="w-full relative pb-8">
-          <img
-            src="/images/bg-claim.svg"
-            className="absolute z-0 right-0"
-            alt=""
-          />
-
           <div className="relative pt-24 sm:pt-32 z-20">
             <div className="bg-[#161B26] border-[#333741] border rounded-xl mx-4 p-4 sm:hidden block mb-5">
               <svg
@@ -912,23 +904,23 @@ export default function ClaimDomain() {
 
             <div className="container mx-auto px-6 flex flex-col md:flex-row gap-6">
               <div className="flex-1">
-                <h1 className="text-3xl font-semibold text-[#F5F5F6]">
-                  Register .town Domain
+                <h1 className="text-3xl font-semibold text-[#101828]">
+                  Register .TIA.ID Domain
                 </h1>
-                <h5 className="text-sm font-normal mt-1 text-[#CECFD2] mb-5">
+                <h5 className="text-sm font-normal mt-1 text-[#344054] mb-5">
                   To claim your .town domains, please complete these steps
                 </h5>
                 <div className="flex flex-col gap-6">
-                  <div className="border border-white" />
+                  <div className="border border-[#D0D5DD]" />
                   {isConnected && address ? (
                     <ConnectWallet />
                   ) : (
                     <div className="flex flex-col sm:flex-row justify-between sm:items-center">
                       <div>
-                        <h4 className="text-lg font-semibold text-[#F5F5F6]">
+                        <h4 className="text-lg font-semibold text-[#101828]">
                           Please connect wallet and verify your account
                         </h4>
-                        <h5 className="text-base font-normal mt-1 text-[#CECFD2]">
+                        <h5 className="text-base font-normal mt-1 text-[#344054]">
                           Sign a message in your wallet to verify that you are
                           the owner of this account.
                         </h5>
@@ -948,12 +940,12 @@ export default function ClaimDomain() {
                     title="Please login with twitter and join our community"
                     subtitle={
                       isOP
-                        ? "(Required) Link your Twitter, follow and join our discord"
+                        ? "(Required) Link your Twitter."
                         : "(Required) Link your Twitter and mint .town on Base"
                     }
                     number="1"
                   >
-                    <div className="my-8 flex justify-between">
+                    <div className="my-5 flex justify-between">
                       <div className="flex justify-between items-center">
                         <div className="flex gap-2 items-center">
                           <svg
@@ -971,15 +963,15 @@ export default function ClaimDomain() {
                                     x.provider == "com.twitter"
                                 )?.displayName
                                   ? "#08a0e9"
-                                  : "#85888E"
+                                  : "#98A2B3"
                               }`}
                             />
                           </svg>
                           <div>
-                            <div className="font-medium text-[#F5F5F6]">
+                            <div className="font-medium text-[#101828]">
                               Twitter
                             </div>
-                            <div className="text-[#94969C] text-xs">
+                            <div className="text-[#667085] text-xs">
                               {state.find(
                                 (x: ISocialOracleState) =>
                                   x.provider == "com.twitter"
@@ -1008,7 +1000,7 @@ export default function ClaimDomain() {
                         </div>
                       ) : (
                         <button
-                          className="flex gap-1 py-2.5 px-3.5 items-center rounded-lg bg-[#111111] glowing-btn "
+                          className="flex gap-1 py-2.5 px-3.5 items-center rounded-lg bg-[#111111] glowing-btn text-white"
                           onClick={() => {
                             performSocialLogin("twitter");
                           }}
@@ -1019,7 +1011,144 @@ export default function ClaimDomain() {
                       )}
                     </div>
 
-                    <div className="flex flex-col gap-4 text-[#F5F5F6]">
+                    <div className="border-b border-dashed" />
+
+                    <div className="my-5 flex justify-between">
+                      <div className="flex justify-between items-center">
+                        <div className="flex gap-2 items-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="36"
+                            height="40"
+                            viewBox="0 0 36 40"
+                            fill="#98A2B3"
+                          >
+                            <path
+                              d="M14.4795 16.7793C13.3395 16.7793 12.4395 17.7793 12.4395 18.9993C12.4395 20.2193 13.3595 21.2193 14.4795 21.2193C15.6195 21.2193 16.5195 20.2193 16.5195 18.9993C16.5395 17.7793 15.6195 16.7793 14.4795 16.7793ZM21.7795 16.7793C20.6395 16.7793 19.7395 17.7793 19.7395 18.9993C19.7395 20.2193 20.6595 21.2193 21.7795 21.2193C22.9195 21.2193 23.8195 20.2193 23.8195 18.9993C23.8195 17.7793 22.9195 16.7793 21.7795 16.7793Z"
+                              fill="#98A2B3"
+                            />
+                            <path
+                              d="M31.4996 0H4.69961C2.43961 0 0.599609 1.84 0.599609 4.12V31.16C0.599609 33.44 2.43961 35.28 4.69961 35.28H27.3796L26.3196 31.58L28.8796 33.96L31.2996 36.2L35.5996 40V4.12C35.5996 1.84 33.7596 0 31.4996 0ZM23.7796 26.12C23.7796 26.12 23.0596 25.26 22.4596 24.5C25.0796 23.76 26.0796 22.12 26.0796 22.12C25.2596 22.66 24.4796 23.04 23.7796 23.3C22.7796 23.72 21.8196 24 20.8796 24.16C18.9596 24.52 17.1996 24.42 15.6996 24.14C14.5596 23.92 13.5796 23.6 12.7596 23.28C12.2996 23.1 11.7996 22.88 11.2996 22.6C11.2396 22.56 11.1796 22.54 11.1196 22.5C11.0796 22.48 11.0596 22.46 11.0396 22.44C10.6796 22.24 10.4796 22.1 10.4796 22.1C10.4796 22.1 11.4396 23.7 13.9796 24.46C13.3796 25.22 12.6396 26.12 12.6396 26.12C8.21961 25.98 6.53961 23.08 6.53961 23.08C6.53961 16.64 9.41961 11.42 9.41961 11.42C12.2996 9.26 15.0396 9.32 15.0396 9.32L15.2396 9.56C11.6396 10.6 9.97961 12.18 9.97961 12.18C9.97961 12.18 10.4196 11.94 11.1596 11.6C13.2996 10.66 14.9996 10.4 15.6996 10.34C15.8196 10.32 15.9196 10.3 16.0396 10.3C17.2596 10.14 18.6396 10.1 20.0796 10.26C21.9796 10.48 24.0196 11.04 26.0996 12.18C26.0996 12.18 24.5196 10.68 21.1196 9.64L21.3996 9.32C21.3996 9.32 24.1396 9.26 27.0196 11.42C27.0196 11.42 29.8996 16.64 29.8996 23.08C29.8996 23.08 28.1996 25.98 23.7796 26.12V26.12Z"
+                              fill="#98A2B3"
+                            />
+                          </svg>
+
+                          <div>
+                            <div className="font-medium text-[#101828]">
+                              Discord
+                            </div>
+                            <div className="text-[#667085] text-xs">
+                              {state.find(
+                                (x: ISocialOracleState) =>
+                                  x.provider == "com.discord"
+                              )?.displayName ?? "Not linked"}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {state.find(
+                        (x: ISocialOracleState) => x.provider == "com.discord"
+                      ) ? (
+                        <ChainChip amount={1 * multiplier}></ChainChip>
+                      ) : (
+                        <></>
+                      )}
+
+                      {state.find(
+                        (x: ISocialOracleState) => x.provider == "com.discord"
+                      ) ? (
+                        <div className="flex justify-center items-center">
+                          <img
+                            src="/images/check.png"
+                            className="w-8 h-8"
+                          ></img>
+                        </div>
+                      ) : (
+                        <button
+                          className="flex gap-1 py-2.5 px-3.5 items-center rounded-lg bg-[#111111] glowing-btn text-white"
+                          onClick={() => {
+                            performSocialLogin("discord");
+                          }}
+                        >
+                          <ChainIcon />
+                          Connect
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="border-b border-dashed" />
+
+                    <div className="my-5 flex justify-between">
+                      <div className="flex justify-between items-center">
+                        <div className="flex gap-2 items-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="40"
+                            height="40"
+                            viewBox="0 0 40 40"
+                            fill="none"
+                          >
+                            <g clip-path="url(#clip0_11068_47944)">
+                              <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M20 0C8.954 0 0 8.968 0 20.034C0 28.884 5.73 36.394 13.678 39.042C14.678 39.226 15.042 38.608 15.042 38.076C15.042 37.602 15.026 36.34 15.016 34.67C9.452 35.88 8.278 31.984 8.278 31.984C7.37 29.668 6.058 29.052 6.058 29.052C4.242 27.812 6.196 27.836 6.196 27.836C8.202 27.976 9.258 29.9 9.258 29.9C11.042 32.96 13.94 32.076 15.078 31.564C15.262 30.27 15.778 29.388 16.35 28.888C11.91 28.382 7.24 26.662 7.24 18.986C7.24 16.8 8.02 15.01 9.298 13.61C9.092 13.104 8.406 11.066 9.494 8.31C9.494 8.31 11.174 7.77 14.994 10.362C16.6255 9.91703 18.3089 9.69039 20 9.688C21.7 9.696 23.41 9.918 25.008 10.362C28.826 7.77 30.502 8.308 30.502 8.308C31.594 11.066 30.906 13.104 30.702 13.61C31.982 15.01 32.758 16.8 32.758 18.986C32.758 26.682 28.08 28.376 23.626 28.872C24.344 29.49 24.982 30.712 24.982 32.582C24.982 35.258 24.958 37.42 24.958 38.076C24.958 38.612 25.318 39.236 26.334 39.04C30.3166 37.7042 33.7787 35.1506 36.231 31.7401C38.6832 28.3296 40.0017 24.2346 40 20.034C40 8.968 31.044 0 20 0Z"
+                                fill="#98A2B3"
+                              />
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_11068_47944">
+                                <rect width="40" height="40" fill="white" />
+                              </clipPath>
+                            </defs>
+                          </svg>
+
+                          <div>
+                            <div className="font-medium text-[#101828]">
+                              Github
+                            </div>
+                            <div className="text-[#667085] text-xs">
+                              {state.find(
+                                (x: ISocialOracleState) =>
+                                  x.provider == "com.github"
+                              )?.displayName ?? "Not linked"}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {state.find(
+                        (x: ISocialOracleState) => x.provider == "com.github"
+                      ) ? (
+                        <ChainChip amount={1 * multiplier}></ChainChip>
+                      ) : (
+                        <></>
+                      )}
+
+                      {state.find(
+                        (x: ISocialOracleState) => x.provider == "com.github"
+                      ) ? (
+                        <div className="flex justify-center items-center">
+                          <img
+                            src="/images/check.png"
+                            className="w-8 h-8"
+                          ></img>
+                        </div>
+                      ) : (
+                        <button
+                          className="flex gap-1 py-2.5 px-3.5 items-center rounded-lg bg-[#111111] glowing-btn text-white"
+                          onClick={() => {
+                            performSocialLogin("github");
+                          }}
+                        >
+                          <ChainIcon />
+                          Connect
+                        </button>
+                      )}
+                    </div>
+
+                    {/* <div className="flex flex-col gap-4 text-[#F5F5F6]">
                       <div className="text-[#CECFD2] text-sm">
                         Finish all steps
                       </div>
@@ -1211,7 +1340,7 @@ export default function ClaimDomain() {
                           </a>
                         )}
                       </div>
-                    </div>
+                    </div> */}
                   </Accordion>
 
                   {isOP ? (
@@ -1221,7 +1350,7 @@ export default function ClaimDomain() {
                         subtitle="Optionally link Aptos and Sui wallets to qualify for an OP token reward."
                         number="2"
                       >
-                        <AptosButton
+                        <CelestiaButton
                           opAmount={0.5 * multiplier}
                           existing={aptosExisting}
                         />

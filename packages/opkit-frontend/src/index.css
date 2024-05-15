@@ -67,16 +67,16 @@
   opacity: 0.9;
 }
 
-.connect-button > div > button{
+/* .connect-button > div > button{
   background: #1F242F !important;
   color:#CECFD2 !important
- }
+ } */
 
- .connect-button > div > button > div:nth-child(2){
+ /* .connect-button > div > button > div:nth-child(2){
   background: #1F242F !important;
   color:#CECFD2 !important;
   border-color: transparent;
- }
+ } */
 
  .text-gradient{
   /* Text lg/Bold */
