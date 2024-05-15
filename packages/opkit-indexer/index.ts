@@ -1,13 +1,31 @@
-import { EventLog, ethers } from "ethers";
+import { createPublicClient, http, parseAbiItem, defineChain, webSocket } from 'viem';
 import sqlite3 from "sqlite3";
 import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import contractABI from './OpkitDomains.json'
+import contractABI from './OpkitDomains.json';
+
+export const opkit = defineChain({
+    id: 5057,
+    name: 'OPKit',
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+    rpcUrls: {
+      default: {
+        http: ['https://rpc-opkit-domains-jlpe79dzdp.t.conduit.xyz'],
+        webSocket: ['wss://rpc-opkit-domains-jlpe79dzdp.t.conduit.xyz'],
+      },
+    },
+    blockExplorers: {
+      default: {
+        name: 'Blockscout',
+        url: 'https://explorerl2new-opkit-domains-jlpe79dzdp.t.conduit.xyz',
+      },
+    },
+  })
 
 dotenv.config();
 
-const contractAddress = process.env.CONTRACT_ADDRESS || "YOUR_CONTRACT_ADDRESS";
+const contractAddress: `0x${string}` = process.env.CONTRACT_ADDRESS! as `0x${string}`;
 
 // Define the block number where the contract was created
 const contractCreationBlock = Number(process.env.CONTRACT_CREATION_BLOCK) || 0;
@@ -71,15 +89,19 @@ const initDb = (db: sqlite3.Database) => {
 };
 
 // Convert block number to timestamp
-const blockToTimestamp = async (blockNumber: number, provider: ethers.Provider): Promise<number> => {
-    const block = await provider.getBlock(blockNumber);
-    if (!block) throw new Error("Block not found")
-    return block.timestamp;
+const blockToTimestamp = async (blockNumber: bigint, client: ReturnType<typeof createPublicClient>): Promise<number> => {
+    const block = await client.getBlock({ blockNumber });
+    return Number(block.timestamp);
 };
 
 // Index domain registration event
 const handleDomainRegistered = async (db: sqlite3.Database, domain: string, owner: string, timestamp: number, txHash: string, logIndex: number) => {
-    db.run(`INSERT OR IGNORE INTO domains (domain, owner, timestamp, tx_hash, log_index) VALUES (?, ?, ?, ?, ?)`, [domain, owner, timestamp, txHash, logIndex]);
+    db.get(`SELECT COUNT(*) as count FROM domains WHERE tx_hash = ? AND log_index = ?`, [txHash, logIndex], (err, row: { count: number }) => {
+        if (row.count === 0) {
+            db.run(`INSERT OR IGNORE INTO domains (domain, owner, timestamp, tx_hash, log_index) VALUES (?, ?, ?, ?, ?)`, [domain, owner, timestamp, txHash, logIndex]);
+            console.log('Registered', domain, owner, timestamp)
+        }
+    })
 };
 
 // Index string record update event
@@ -87,55 +109,80 @@ const handleStringRecordUpdated = async (db: sqlite3.Database, domain: string, k
     db.get(`SELECT COUNT(*) as count FROM string_records WHERE tx_hash = ? AND log_index = ?`, [txHash, logIndex], (err, row: { count: number }) => {
         if (row.count === 0) {
             db.run(`INSERT OR REPLACE INTO string_records (domain, key, value, timestamp, tx_hash, log_index) VALUES (?, ?, ?, ?, ?, ?)`, [domain, key, value, timestamp, txHash, logIndex]);
+            console.log('Recorded', domain, key, value, timestamp)
         }
     });
 };
 
 // Fetch past events and index them
-const fetchPastEvents = async (contract: ethers.Contract, db: sqlite3.Database, fromBlock: number, toBlock: number, provider: ethers.Provider) => {
-    const domainRegisteredLogs = await contract.queryFilter("DomainRegistered", fromBlock, toBlock);
-    for (const log of domainRegisteredLogs as EventLog[]) {
+const fetchPastEvents = async (client: ReturnType<typeof createPublicClient>, db: sqlite3.Database, fromBlock: number, toBlock: number) => {
+    const domainRegisteredLogs = await client.getLogs({
+        address: contractAddress,
+        event: parseAbiItem('event DomainRegistered(string domain, address owner)'),
+        fromBlock: BigInt(fromBlock),
+        toBlock: BigInt(toBlock),
+    });
+
+    for (const log of domainRegisteredLogs) {
         const { domain, owner } = log.args;
-        const timestamp = await blockToTimestamp(log.blockNumber, provider);
-        await handleDomainRegistered(db, domain, owner, timestamp, log.transactionHash, log.index);
+        const timestamp = await blockToTimestamp(log.blockNumber, client);
+        await handleDomainRegistered(db, domain!, owner!, timestamp, log.transactionHash, log.logIndex);
     }
 
-    const stringRecordUpdatedLogs = await contract.queryFilter("StringRecordUpdated", fromBlock, toBlock);
-    for (const log of stringRecordUpdatedLogs as EventLog[]) {
+    const stringRecordUpdatedLogs = await client.getLogs({
+        address: contractAddress,
+        event: parseAbiItem('event StringRecordUpdated(string domain, string key, string newValue)'),
+        fromBlock: BigInt(fromBlock),
+        toBlock: BigInt(toBlock),
+    });
+
+    for (const log of stringRecordUpdatedLogs) {
         const { domain, key, newValue } = log.args;
-        const timestamp = await blockToTimestamp(log.blockNumber, provider);
-        await handleStringRecordUpdated(db, domain, key, newValue, timestamp, log.transactionHash, log.index);
+        const timestamp = await blockToTimestamp(log.blockNumber, client);
+        await handleStringRecordUpdated(db, domain!, key!, newValue!, timestamp, log.transactionHash, log.logIndex);
     }
 };
 
 // Main function to listen to events and update the database
 const main = async () => {
     // Connect to the Ethereum network (e.g., using Infura)
-    const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
-
-    // Connect to the contract
-    const contract = new ethers.Contract(contractAddress, contractABI, provider);
+    const client = createPublicClient({
+        chain: opkit,
+        transport: http(),
+    });
 
     // Connect to the database and initialize it
     const db = connectDb();
     initDb(db);
 
     // Fetch past events
-    const currentBlock = await provider.getBlockNumber();
-    await fetchPastEvents(contract, db, contractCreationBlock, currentBlock, provider);
+    const currentBlock = await client.getBlockNumber();
+    await fetchPastEvents(client, db, contractCreationBlock, Number(currentBlock));
 
     // Listen to future events
-    contract.on("DomainRegistered", async (domain: string, owner: string, event) => {
-        console.log(`DomainRegistered: ${domain} by ${owner}`);
-        const timestamp = await blockToTimestamp(event.blockNumber, provider);
-        await handleDomainRegistered(db, domain, owner, timestamp, event.transactionHash, event.logIndex);
-    });
+    client.watchEvent({
+        address: contractAddress,
+        event: parseAbiItem('event DomainRegistered(string domain, address owner)'),
+        onLogs: async logs => {
+            for (const log of logs) {
+                const { domain, owner } = log.args;
+                const timestamp = await blockToTimestamp(log.blockNumber, client);
+                await handleDomainRegistered(db, domain!, owner!, timestamp, log.transactionHash, log.logIndex);        
+            }
+        },
+    })
 
-    contract.on("StringRecordUpdated", async (domain: string, key: string, newValue: string, event) => {
-        console.log(`StringRecordUpdated: ${domain}, ${key} = ${newValue}`);
-        const timestamp = await blockToTimestamp(event.blockNumber, provider);
-        await handleStringRecordUpdated(db, domain, key, newValue, timestamp, event.transactionHash, event.logIndex);
-    });
+    client.watchEvent({
+        address: contractAddress,
+        event: parseAbiItem('event StringRecordUpdated(string domain, string key, string newValue)'),
+        onLogs: async logs => {
+            for (const log of logs) {
+                const { domain, key, newValue } = log.args;
+                const timestamp = await blockToTimestamp(log.blockNumber, client);
+                await handleStringRecordUpdated(db, domain!, key!, newValue!, timestamp, log.transactionHash, log.logIndex);
+            }
+        },
+    })
 
     console.log("Listening for contract events...");
 
