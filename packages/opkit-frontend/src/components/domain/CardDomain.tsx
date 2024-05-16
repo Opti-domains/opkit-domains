@@ -143,13 +143,15 @@ export function CardDomain({
   return (
     <div
       className={
-        "bg-[#0C111D] h-auto rounded-xl p-6 flex flex-col gap-5" +
+        "bg-white h-auto rounded-xl p-6 flex flex-col gap-5" +
         (primaryDomain == domainName ? " glowing-btn glowing-red" : "") +
         " " +
         className
       }
     >
-      <h4 className="text-[#F5F5F6] text-2xl font-bold">{domainDisplayName}</h4>
+      <h4 className="text-[#667085] text-2xl font-bold">
+        {domainDisplayName} <span className="text-[#101828]">.tia.id</span>
+      </h4>
       <div className="flex gap-5 justify-between">
         <div className="flex gap-3 items-center text-base font-medium">
           <img
@@ -161,17 +163,19 @@ export function CardDomain({
             className="w-6 h-6"
             alt=""
           />
-          <div className="text-[#F5F5F6]">
+          <div className="text-[#101828]">
             {chains.find((x) => x.id == domainChainId)?.name}
           </div>
         </div>
-        <div className="text-[#F5F5F6]">
+        <div className="text-[#101828]">
           Expire: {new Date(1735689600000).toLocaleString()}
         </div>
       </div>
-      <hr className="border-[#333741]" />
+      <hr className="border-[#D0D5DD]" />
       <div className={"grid gap-4" + (oneColumn ? "" : " sm:grid-cols-2")}>
-        <div className="text-xs font-medium">Social Profiles</div>
+        <div className="text-xs font-normal text-[#667085]">
+          Social Profiles
+        </div>
         <div>
           <div className="mb-2">
             <RecordSocialDomainFromProfiles
@@ -180,8 +184,22 @@ export function CardDomain({
               loading={loading}
             />
           </div>
+          <div className="mb-2">
+            <RecordSocialDomainFromProfiles
+              provider={"com.discord"}
+              profiles={socialProfiles}
+              loading={loading}
+            />
+          </div>
+          <div className="mb-2">
+            <RecordSocialDomainFromProfiles
+              provider={"com.github"}
+              profiles={socialProfiles}
+              loading={loading}
+            />
+          </div>
         </div>
-        <div className="text-xs font-medium">Wallets</div>
+        <div className="text-xs font-medium text-[#667085]">Wallets</div>
         <div>
           {walletProviderList.map(
             (coinType) =>
@@ -263,7 +281,7 @@ export function CardDomain({
                     />
                   </svg>
 
-                  <div className="text-[#F5F5F6] text-sm">
+                  <div className="text-[#101828] text-sm">
                     +{rpgf4bonus}% RPGF4
                   </div>
                 </div>

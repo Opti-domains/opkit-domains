@@ -18,7 +18,7 @@ const truncateAddress = (address: string | undefined) => {
   return `${address.slice(0, 6)}...${address.slice(-5)}`;
 };
 
-function CelestiaButtonUnstyled(props: any) {
+function OpKitButtonUnstyled(props: any) {
   const { domainName, state, dispatch } = useContext(DomainConnectContext);
   const [walletSelectorModalOpen, setWalletSelectorModalOpen] = useState(false);
   const { connect, disconnect, account, wallets, connected, signMessage } =
@@ -128,11 +128,11 @@ function CelestiaButtonUnstyled(props: any) {
       <div className="flex justify-between items-center mt-8">
         <div className="flex gap-2 w-64">
           <div>
-            <img src="/images/celestia.svg" className="w-10 h-10" alt="" />
+            <img src="/images/opkit.svg" className="w-10 h-10" alt="" />
           </div>
           <div>
             <div className="flex gap-2 items-center">
-              <div className="font-medium text-[#101828]">Celestia</div>
+              <div className="font-medium text-[#101828]">OPKit Rollkit</div>
               {walletState && (
                 <div>
                   <svg
@@ -153,7 +153,6 @@ function CelestiaButtonUnstyled(props: any) {
                 </div>
               )}
             </div>
-
             <div className="mt-1 text-[#667085] text-xs">
               {walletState
                 ? `Linked as: ${addressEllipsis(walletState.displayName)}`
@@ -220,7 +219,7 @@ function CelestiaButtonUnstyled(props: any) {
                 </clipPath>
               </defs>
             </svg>
-            Link Celestia wallet
+            Link Rollkit wallet
           </button>
         )}
       </div>
@@ -285,7 +284,7 @@ function CelestiaButtonUnstyled(props: any) {
   );
 }
 
-export default styled(CelestiaButtonUnstyled)`
+export default styled(OpKitButtonUnstyled)`
   .ant-menu {
     border: none !important;
   }

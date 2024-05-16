@@ -3,7 +3,7 @@ import { Modal, message } from "antd";
 import axios from "axios";
 import { ethers } from "ethers";
 import { useCallback, useEffect, useState } from "react";
-import SuiButton from "src/components/action-buttons/connect-wallet/Sui";
+import OpKitButton from "src/components/action-buttons/connect-wallet/OpKit";
 import CelestiaButton from "src/components/action-buttons/connect-wallet/celestia";
 import { Accordion } from "src/components/common/Accordion";
 import { ChainChip } from "src/components/common/ChainChip";
@@ -1355,7 +1355,7 @@ export default function ClaimDomain() {
                           existing={aptosExisting}
                         />
                         <hr className="border-dashed border-[#333741] my-4" />
-                        <SuiButton
+                        <OpKitButton
                           opAmount={0.5 * multiplier}
                           existing={suiExisting}
                         />
@@ -1368,15 +1368,15 @@ export default function ClaimDomain() {
               </div>
               <div
                 className="w-full md:w-[440px]"
-                style={{
-                  visibility:
-                    isConnected &&
-                    state.find(
-                      (x: ISocialOracleState) => x.provider == "com.twitter"
-                    )
-                      ? "visible"
-                      : "hidden",
-                }}
+                // style={{
+                //   visibility:
+                //     isConnected &&
+                //     state.find(
+                //       (x: ISocialOracleState) => x.provider == "com.twitter"
+                //     )
+                //       ? "visible"
+                //       : "hidden",
+                // }}
               >
                 <CardDomain
                   domainChainId={
@@ -1384,7 +1384,7 @@ export default function ClaimDomain() {
                     parseInt(import.meta.env.VITE_DEFAULT_CHAIN_ID!)
                   }
                   domainName={domainName}
-                  domainDisplayName={domainName || "<YOURNAME>.town"}
+                  domainDisplayName={domainName || "<YOURNAME>"}
                   inputProfiles={stateWithExisting(
                     state,
                     aptosExisting,

@@ -22,7 +22,7 @@ export function WalletDomainRecord(props: DomainWalletRecordProps) {
     <div className="flex items-center justify-between">
       <div
         className={
-          "mr-2 flex-shrink-0 flex gap-3  " +
+          "mr-2 flex-shrink-0 flex gap-3" +
           (!props.displayName && !props.identity ? "opacity-50" : "")
         }
       >
