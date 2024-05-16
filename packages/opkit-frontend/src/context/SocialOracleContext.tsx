@@ -19,6 +19,8 @@ export const socialOracleReducer = (
         (s) => s.provider == action.provider
       );
 
+      console.log('CALLBACK', state, action)
+
       if (existingIndex != -1) {
         return state.map((s) => {
           if (s.provider === action.provider) {
@@ -48,6 +50,8 @@ export const socialOracleReducer = (
       return [];
 
     case "LOAD":
+      console.log('LOAD', action.data)
+      if (action.data.length == 0) return state
       return action.data as ISocialOracleState[];
 
     default:

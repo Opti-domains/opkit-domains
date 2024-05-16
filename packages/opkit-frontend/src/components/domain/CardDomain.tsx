@@ -150,7 +150,7 @@ export function CardDomain({
       }
     >
       <h4 className="text-[#667085] text-2xl font-bold">
-        {domainDisplayName} <span className="text-[#101828]">.tia.id</span>
+        <span className="text-[#101828]">{domainDisplayName}</span>
       </h4>
       <div className="flex gap-5 justify-between">
         <div className="flex gap-3 items-center text-base font-medium">
@@ -215,7 +215,7 @@ export function CardDomain({
           )}
         </div>
 
-        {(opAmount > 0 || !isOP) && (
+        {false && (opAmount > 0 || !isOP) && (
           <>
             <hr className="border-[#333741] border-dashed" />
             <div className="flex gap-1">
@@ -297,13 +297,7 @@ export function CardDomain({
           disabled={!baseMinted || !followed}
           style={{ opacity: baseMinted && followed ? 1 : 0.5 }}
         >
-          {!baseMinted
-            ? "Please mint on BASE first"
-            : !followed
-            ? "Follow and join us first"
-            : !isOP
-            ? "Register for RPGF4 Bonus"
-            : `Register ${opAmount ? `and Claim ${opAmount} OP` : ""}`.trim()}
+          Register OPKit Domains
         </button>
       </div>
     </div>

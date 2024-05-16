@@ -35,6 +35,7 @@ import "./polyfills.ts";
 import * as Sentry from "@sentry/react";
 import ClaimDomain from "./pages/claim-domain.tsx";
 import ExplorerPage from "./pages/explorer.tsx";
+import { defineChain } from "viem";
 
 const modeTestnet = {
   id: 919,
@@ -68,16 +69,30 @@ const modeTestnet = {
   testnet: true,
 };
 
-const chain_configs =
-  import.meta.env.VITE_DEV_MODE == "1"
-    ? [optimismGoerli, baseGoerli, modeTestnet]
-    : [
-        optimism,
-        {
-          ...base,
-          iconUrl: "/images/chains/base.png",
-        },
-      ];
+const opkit = defineChain(
+  {
+    id: 5057,
+    name: 'OPKit Conduit',
+    network: 'opkit',
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+    rpcUrls: {
+      default: {
+        http: ['https://rpc-opkit-domains-jlpe79dzdp.t.conduit.xyz'],
+      },
+      public: {
+        http: ['https://rpc-opkit-domains-jlpe79dzdp.t.conduit.xyz'],
+      },
+    },
+    blockExplorers: {
+      default: {
+        name: 'Blockscout',
+        url: 'https://explorerl2new-opkit-domains-jlpe79dzdp.t.conduit.xyz',
+      },
+    },
+  },
+)
+
+const chain_configs = [opkit]
 
 const { chains, publicClient } = configureChains(chain_configs as any, [
   publicProvider(),

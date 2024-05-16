@@ -185,7 +185,7 @@ export default function ClaimDomain() {
         state
           .find((x: ISocialOracleState) => x.provider == "com.twitter")
           ?.identity.replace(/_/g, "-")
-          .toLowerCase() + ".town";
+          .toLowerCase() + ".opkit";
       setDomainName(domainName);
     } else {
       setQuestsPassed([]);
@@ -905,10 +905,10 @@ export default function ClaimDomain() {
             <div className="container mx-auto px-6 flex flex-col md:flex-row gap-6">
               <div className="flex-1">
                 <h1 className="text-3xl font-semibold text-[#101828]">
-                  Register .TIA.ID Domain
+                  Register OPKit Domain
                 </h1>
                 <h5 className="text-sm font-normal mt-1 text-[#344054] mb-5">
-                  To claim your .town domains, please complete these steps
+                  Register your .opkit domains and claim reward on Rollkit
                 </h5>
                 <div className="flex flex-col gap-6">
                   <div className="border border-[#D0D5DD]" />
@@ -937,12 +937,8 @@ export default function ClaimDomain() {
                   )}
 
                   <Accordion
-                    title="Please login with twitter and join our community"
-                    subtitle={
-                      isOP
-                        ? "(Required) Link your Twitter."
-                        : "(Required) Link your Twitter and mint .town on Base"
-                    }
+                    title="Link Social Accounts"
+                    subtitle={"Link your social accounts to opkit domains"}
                     number="1"
                   >
                     <div className="my-5 flex justify-between">
@@ -980,14 +976,6 @@ export default function ClaimDomain() {
                           </div>
                         </div>
                       </div>
-
-                      {state.find(
-                        (x: ISocialOracleState) => x.provider == "com.twitter"
-                      ) ? (
-                        <ChainChip amount={1 * multiplier}></ChainChip>
-                      ) : (
-                        <></>
-                      )}
 
                       {state.find(
                         (x: ISocialOracleState) => x.provider == "com.twitter"
@@ -1046,14 +1034,6 @@ export default function ClaimDomain() {
                           </div>
                         </div>
                       </div>
-
-                      {state.find(
-                        (x: ISocialOracleState) => x.provider == "com.discord"
-                      ) ? (
-                        <ChainChip amount={1 * multiplier}></ChainChip>
-                      ) : (
-                        <></>
-                      )}
 
                       {state.find(
                         (x: ISocialOracleState) => x.provider == "com.discord"
@@ -1117,14 +1097,6 @@ export default function ClaimDomain() {
                           </div>
                         </div>
                       </div>
-
-                      {state.find(
-                        (x: ISocialOracleState) => x.provider == "com.github"
-                      ) ? (
-                        <ChainChip amount={1 * multiplier}></ChainChip>
-                      ) : (
-                        <></>
-                      )}
 
                       {state.find(
                         (x: ISocialOracleState) => x.provider == "com.github"
@@ -1402,12 +1374,8 @@ export default function ClaimDomain() {
                   opAmount={multiplier == 0 ? 0 : airdropAmount}
                   opBaseAmount={airdropBaseAmount}
                   isOP={isOP}
-                  baseMinted={baseMinted}
-                  followed={
-                    optidomainsFollowed == 2 &&
-                    singularFollowed == 2 &&
-                    discordJoined == 2
-                  }
+                  baseMinted={true}
+                  followed={true}
                 />
               </div>
             </div>
