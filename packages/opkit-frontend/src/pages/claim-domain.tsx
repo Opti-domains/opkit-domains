@@ -31,6 +31,15 @@ import {
   useWalletClient,
 } from "wagmi";
 import OPTownAirdropABI from "../abi/OPTownAirdrop.json";
+import OpkitDomainsABI from "../abi/OpkitDomains.json";
+
+const RECORD_MAPPING: {[x: string]: string} = {
+  'com.twitter': 'twitter',
+  'com.discord': 'discord',
+  'com.github': 'github',
+  'wallet:celestia': 'celestia',
+  'wallet:opkit': 'opkit',
+}
 
 const AddressResolverABI = [
   {
@@ -317,6 +326,44 @@ export default function ClaimDomain() {
 
     return false;
   }, [address, domainName, setIsRegisterSigning]);
+
+  const { writeAsync: opkitRegisterTx } = useContractWrite({
+    address: '0x319D2E970d57D957f715c87b4736572Dd52B243B',
+    abi: OpkitDomainsABI,
+    functionName: 'register',
+  })
+
+  const opkitRegister = useCallback(async () => {
+    try {
+      const keys: string[] = []
+      const values: string[] = []
+
+      for (const record of state) {
+        const parsedProvider = RECORD_MAPPING[record.provider]
+        if (parsedProvider) {
+          keys.push(parsedProvider)
+          values.push(record.identity)
+        }
+      }
+
+      const tx = await opkitRegisterTx({
+        args: [
+          domainName,
+          address,
+          keys,
+          values,
+        ]
+      })
+
+      await publicClient.waitForTransactionReceipt({ hash: tx.hash })
+
+      message.success("Register success")
+      setIsIndexing(true)
+    } catch (err) {
+      console.error(err)
+      message.error("Register failed")
+    }
+  }, [address, domainName, state])
 
   const evmAttest = useCallback(async () => {
     if (isWalletClientLoading) {
@@ -1375,7 +1422,7 @@ export default function ClaimDomain() {
                     uid: "",
                   }))}
                   oneColumn={true}
-                  evmAttest={evmAttest}
+                  evmAttest={opkitRegister}
                   opAmount={multiplier == 0 ? 0 : airdropAmount}
                   opBaseAmount={airdropBaseAmount}
                   isOP={isOP}
@@ -1418,7 +1465,7 @@ export default function ClaimDomain() {
           <div className="text-center text-lg font-semibold text-[#101828]">
             Congratulations!{" "}
             <span className="text-[#2B3366]">{domainName}</span> has been
-            registered on {isOP ? "Optimism" : "Base"}.
+            registered on OPKit conduit.
           </div>
         </div>
         <div className="mt-5 space-y-3">
