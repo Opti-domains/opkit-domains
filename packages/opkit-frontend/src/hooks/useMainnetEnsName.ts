@@ -165,7 +165,7 @@ export function useMainnetEnsName(address: `0x${string}` | undefined) {
         ? undefined
         : address,
     chainId: chain?.id,
-    universalResolverAddress: universalResolver,
+    // universalResolverAddress: universalResolver,
   });
 
   const { data: ensNameMainnet } = useEnsName({
