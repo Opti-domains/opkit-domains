@@ -31,6 +31,8 @@ export function WalletDomainRecord(props: DomainWalletRecordProps) {
           {coinType === "60" && "EVM"}
           {coinType === "637" && "Celestia"}
           {coinType === "784" && "Rollkit"}
+          {coinType === "celestia" && "Celestia"}
+          {coinType === "opkit" && "Rollkit"}
         </div>
       </div>
 
@@ -40,7 +42,7 @@ export function WalletDomainRecord(props: DomainWalletRecordProps) {
           (!props.displayName && !props.identity ? "opacity-50" : "")
         }
       >
-        {addressEllipsis(props.displayName || props.identity || "Not Set")}
+        {(props.displayName || props.identity || "Not Set").substring(0, 16)}{props.displayName ? '...' : ''}
       </div>
     </div>
   );

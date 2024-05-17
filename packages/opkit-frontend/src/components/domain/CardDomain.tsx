@@ -121,8 +121,8 @@ export function CardDomain({
 
   const walletProviderList = [
     // "60",
-    "637",
-    "784",
+    "celestia",
+    "opkit",
     // '501',
 
     // "freedom.temporary.wallet.op",
@@ -167,9 +167,9 @@ export function CardDomain({
             {chains.find((x) => x.id == domainChainId)?.name}
           </div>
         </div>
-        <div className="text-[#101828]">
+        {/* <div className="text-[#101828]">
           Expire: {new Date(1735689600000).toLocaleString()}
-        </div>
+        </div> */}
       </div>
       <hr className="border-[#D0D5DD]" />
       <div className={"grid gap-4" + (oneColumn ? "" : " sm:grid-cols-2")}>

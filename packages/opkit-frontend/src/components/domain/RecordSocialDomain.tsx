@@ -10,7 +10,7 @@ interface DomainSocialRecordProps extends SocialConfig {
 }
 
 export function RecordSocialDomain(props: DomainSocialRecordProps) {
-  console.log(props);
+  // console.log(props);
   return (
     <div className="flex items-center justify-between">
       <div

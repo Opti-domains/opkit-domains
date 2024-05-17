@@ -14,7 +14,7 @@ export default function RegisterConfirmationModal({
   domainDisplayName,
 }: any) {
   const { chains } = useNetwork();
-  const [acceptPolicy, setAcceptPolicy] = useState(false);
+  const [acceptPolicy, setAcceptPolicy] = useState(true);
   const [registering, setRegistering] = useState(false);
   const [asPrimary, setAsPrimary] = useState(true);
 
@@ -85,7 +85,7 @@ export default function RegisterConfirmationModal({
         />
       </div>
 
-      <div className="mb-3">
+      {/* <div className="mb-3">
         <Checkbox
           checked={asPrimary}
           onChange={(e) => setAsPrimary(e.target.checked)}
@@ -110,7 +110,7 @@ export default function RegisterConfirmationModal({
             without requiring permission for any purpose.
           </div>
         </Checkbox>
-      </div>
+      </div> */}
     </Modal>
   );
 }
