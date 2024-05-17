@@ -1480,7 +1480,7 @@ export default function ClaimDomain() {
           />
           <div className="text-center text-lg font-semibold text-[#101828]">
             Congratulations!{" "}
-            <span className="text-[#2B3366]">{domainName}</span> has been
+            <span className="text-[#2B3366]">{domainNameOverride}</span> has been
             registered on OPKit conduit.
           </div>
         </div>
