@@ -770,8 +770,7 @@ export default function ClaimDomain() {
           <div className="flex items-center container mx-auto">
             <div className="flex items-center flex-grow">
               <a href="/" className="flex justify-center gap-2">
-                <img src={"/images/logo.svg"} style={{ height: 48 }} />
-                <img src={"/images/logo-text.svg"} style={{ height: 48 }} />
+                <img src={"/images/Logo_wrap_new.svg"} style={{ height: 48 }} />
               </a>
             </div>
             <ConnectWallet />
