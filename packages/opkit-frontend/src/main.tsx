@@ -113,7 +113,7 @@ const wagmiConfig = createConfig({
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <ClaimDomain />,
   },
   {
     path: "/explorer",
