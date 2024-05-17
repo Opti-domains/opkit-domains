@@ -1314,21 +1314,27 @@ export default function ClaimDomain() {
                     </div> */}
                   </Accordion>
 
-                  {isOP ? (
+                  {true ? (
                     <div className="hidden sm:block">
                       <Accordion
                         title="Link Wallets"
-                        subtitle="Optionally link Aptos and Sui wallets to qualify for an OP token reward."
+                        subtitle="Link Celestia and Rollkit Wallet to opkit domains"
                         number="2"
                       >
                         <CelestiaButton
                           opAmount={0.5 * multiplier}
                           existing={aptosExisting}
+                          domainName={domainName}
+                          state={state}
+                          dispatch={dispatch}
                         />
                         <hr className="border-dashed border-[#333741] my-4" />
                         <OpKitButton
                           opAmount={0.5 * multiplier}
                           existing={suiExisting}
+                          domainName={domainName}
+                          state={state}
+                          dispatch={dispatch}
                         />
                       </Accordion>
                     </div>

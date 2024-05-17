@@ -112,6 +112,20 @@ const WALLET_ORACLE_CONFIG: { [coinType: string]: WalletConfig } = {
     icon: suiIcon,
     Component: SuiButton,
   },
+  "celestia": {
+    name: "Aptos",
+    color: "white",
+    background: "black",
+    icon: aptosIcon,
+    Component: AptosButton,
+  },
+  "opkit": {
+    name: "Sui",
+    color: "white",
+    background: "#0073e6",
+    icon: suiIcon,
+    Component: SuiButton,
+  },
   "501": {
     name: "Solana",
     color: "white",
