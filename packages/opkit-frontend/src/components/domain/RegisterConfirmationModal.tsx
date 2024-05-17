@@ -58,7 +58,7 @@ export default function RegisterConfirmationModal({
         </div>,
         <div
           className={
-            "w-full p-3 hover:cursor-pointer text-center mt-3 border-[#333741] border rounded-lg bg-[#161B26]" +
+            "w-full p-3 hover:cursor-pointer text-center mt-3 border-[#D0D5DD] border rounded-lg bg-white text-[#344054]" +
             (registering ? " hidden" : "")
           }
           onClick={onClose}
@@ -89,21 +89,26 @@ export default function RegisterConfirmationModal({
         <Checkbox
           checked={asPrimary}
           onChange={(e) => setAsPrimary(e.target.checked)}
+          className="bg-white"
         >
-          Set {domainDisplayName} as primary domain on{" "}
-          {chains.find((x) => x.id == chainId)?.name}
+          <div className="text-[#344054]">
+            Set {domainDisplayName} as primary domain on{" "}
+            {chains.find((x) => x.id == chainId)?.name}
+          </div>
         </Checkbox>
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4 ">
         <Checkbox
           checked={acceptPolicy}
           onChange={(e) => setAcceptPolicy(e.target.checked)}
         >
-          I acknowledge that my social profiles and wallet connection details
-          will be made public, stored, and verifiable in the blockchain, and I
-          understand that any third party can use my connection details without
-          requiring permission for any purpose.
+          <div className="text-[#344054]">
+            I acknowledge that my social profiles and wallet connection details
+            will be made public, stored, and verifiable in the blockchain, and I
+            understand that any third party can use my connection details
+            without requiring permission for any purpose.
+          </div>
         </Checkbox>
       </div>
     </Modal>

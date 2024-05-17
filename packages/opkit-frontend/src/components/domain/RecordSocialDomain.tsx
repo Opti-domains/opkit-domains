@@ -77,7 +77,12 @@ export function RecordSocialDomain(props: DomainSocialRecordProps) {
         <div className="text-[#101828]">{props.name}</div>
       </div>
 
-      <div className={"mr-3 truncate text-[#667085]"}>
+      <div
+        className={
+          "mr-3 truncate text-[#667085] " +
+          (!props.displayName && !props.identity ? "opacity-50" : "")
+        }
+      >
         {props.displayName || props.identity || "Not Set"}
       </div>
     </div>

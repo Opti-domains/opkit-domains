@@ -6,7 +6,6 @@ import { useCallback, useEffect, useState } from "react";
 import OpKitButton from "src/components/action-buttons/connect-wallet/OpKit";
 import CelestiaButton from "src/components/action-buttons/connect-wallet/celestia";
 import { Accordion } from "src/components/common/Accordion";
-import { ChainChip } from "src/components/common/ChainChip";
 import { ChainIcon } from "src/components/common/ChainIcon";
 import { ConnectWallet } from "src/components/common/ConnectWallet";
 import { CardDomain } from "src/components/domain/CardDomain";
@@ -1401,30 +1400,20 @@ export default function ClaimDomain() {
         closable={false}
         maskClosable={false}
       >
-        <div className="font-semibold text-center text-lg">
+        <div className="font-semibold text-center text-lg text-[#101828]">
           Transaction Details
         </div>
         <div className="mt-8 space-y-4">
           <img
-            src="/images/op-success.png"
+            src="/images/logo login loading.svg"
             alt=""
             className="w-28 h-28 mx-auto"
           />
-          <div className="text-center text-lg font-semibold text-[#F5F5F6]">
+          <div className="text-center text-lg font-semibold text-[#101828]">
             Congratulations!{" "}
-            <span className="text-[#94969C]">{domainName}</span> has been
+            <span className="text-[#2B3366]">{domainName}</span> has been
             registered on {isOP ? "Optimism" : "Base"}.
           </div>
-          {isOP && (
-            <div className="text-[#94969C] text-xs text-center">
-              Want to earn more reward? Mint on BASE 👇
-            </div>
-          )}
-          {!isOP && (
-            <div className="text-[#94969C] text-xs text-center">
-              Want to earn more reward? Mint on OP 👇
-            </div>
-          )}
         </div>
         <div className="mt-5 space-y-3">
           {isOP && (
@@ -1438,19 +1427,8 @@ export default function ClaimDomain() {
               Mint on BASE for more reward
             </button>
           )}
-          {!isOP && (
-            <button
-              className="font-semibold bg-[#FF0420] rounded-lg px-4 py-2.5 shadow-sm w-full mt-5"
-              onClick={() => {
-                switchNetwork?.(10);
-                setIsIndexing(false);
-              }}
-            >
-              Mint on OP for more reward
-            </button>
-          )}
           <a href="/">
-            <button className="font-semibold bg-[#161B26] rounded-lg px-4 py-2.5 shadow-sm w-full mt-5 border border-[#333741]">
+            <button className="font-semibold bg-[#FFFFFF] rounded-lg px-4 py-2.5 shadow-sm w-full mt-5 border border-[#D0D5DD] text-[#344054]">
               My domains
             </button>
           </a>

@@ -22,19 +22,21 @@ export function WalletDomainRecord(props: DomainWalletRecordProps) {
     <div className="flex items-center justify-between">
       <div
         className={
-          "mr-2 flex-shrink-0 flex gap-3" +
+          "mr-2 flex-shrink-0 flex gap-3 items-center " +
           (!props.displayName && !props.identity ? "opacity-50" : "")
         }
       >
         <img src={props.icon} className="rounded-full" style={{ height: 24 }} />
-        {coinType === "60" && "EVM"}
-        {coinType === "637" && "Aptos"}
-        {coinType === "784" && "Sui"}
+        <div className="text-[#101828]">
+          {coinType === "60" && "EVM"}
+          {coinType === "637" && "Celestia"}
+          {coinType === "784" && "Rollkit"}
+        </div>
       </div>
 
       <div
         className={
-          "mr-3 truncate " +
+          "mr-3 truncate text-[#667085] " +
           (!props.displayName && !props.identity ? "opacity-50" : "")
         }
       >
