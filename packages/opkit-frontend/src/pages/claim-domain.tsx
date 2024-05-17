@@ -1,5 +1,5 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { Modal, message } from "antd";
+import { Input, Modal, message } from "antd";
 import axios from "axios";
 import { ethers } from "ethers";
 import { useCallback, useEffect, useState } from "react";
@@ -103,8 +103,13 @@ export default function ClaimDomain() {
   const { chain } = useNetwork();
   const [editMode, setEditMode] = useState(false);
   const [domainName, setDomainName] = useState("");
+  const [domainNameOverride, setDomainNameOverride] = useState("");
   const [state, dispatch, sessionId] = useSocialState();
   const { switchNetwork } = useSwitchNetwork();
+
+  useEffect(() => {
+    setDomainNameOverride(domainName)
+  }, [domainName])
 
   const [domainList, domainListLoading] = useDomainList(
     address || "",
@@ -348,7 +353,7 @@ export default function ClaimDomain() {
 
       const tx = await opkitRegisterTx({
         args: [
-          domainName,
+          domainNameOverride,
           address,
           keys,
           values,
@@ -363,7 +368,7 @@ export default function ClaimDomain() {
       console.error(err)
       message.error("Register failed")
     }
-  }, [address, domainName, state])
+  }, [address, domainNameOverride, state])
 
   const evmAttest = useCallback(async () => {
     if (isWalletClientLoading) {
@@ -1387,6 +1392,18 @@ export default function ClaimDomain() {
                   ) : (
                     <div></div>
                   )}
+
+                  <div className="hidden sm:block">
+                    <Accordion
+                      title="Domain Name"
+                      subtitle="Enter your desired domain name"
+                      number="3"
+                    >
+                      <div className="mt-4">
+                        <Input type="text" value={domainNameOverride} onChange={e => setDomainNameOverride(e.target.value)}></Input>
+                      </div>
+                    </Accordion>
+                  </div>
                 </div>
               </div>
               <div
@@ -1407,7 +1424,7 @@ export default function ClaimDomain() {
                     parseInt(import.meta.env.VITE_DEFAULT_CHAIN_ID!)
                   }
                   domainName={domainName}
-                  domainDisplayName={domainName || "<YOURNAME>"}
+                  domainDisplayName={domainNameOverride || "<YOURNAME>"}
                   inputProfiles={stateWithExisting(
                     state,
                     aptosExisting,
@@ -1481,7 +1498,7 @@ export default function ClaimDomain() {
           )}
           <a href="/">
             <button className="font-semibold bg-[#FFFFFF] rounded-lg px-4 py-2.5 shadow-sm w-full mt-5 border border-[#D0D5DD] text-[#344054]">
-              My domains
+              Register more domains
             </button>
           </a>
         </div>
