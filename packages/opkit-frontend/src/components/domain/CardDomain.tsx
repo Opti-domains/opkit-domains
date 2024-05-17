@@ -290,7 +290,7 @@ export function CardDomain({
           </>
         )}
 
-        <hr className="border-[#1F242F]" />
+        <hr className="border-[#EAECF0]" />
         <button
           className="font-semibold bg-[#111] rounded-lg px-4 py-2.5 shadow-sm glowing-btn"
           onClick={evmAttest}

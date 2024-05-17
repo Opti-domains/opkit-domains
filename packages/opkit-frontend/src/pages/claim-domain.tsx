@@ -952,7 +952,7 @@ export default function ClaimDomain() {
               </div>
             </div>
 
-            <div className="container mx-auto px-6 flex flex-col md:flex-row gap-6">
+            <div className="container mx-auto flex flex-col md:flex-row gap-6">
               <div className="flex-1">
                 <h1 className="text-3xl font-semibold text-[#101828]">
                   Register OPKit Domain
@@ -1379,7 +1379,7 @@ export default function ClaimDomain() {
                           state={state}
                           dispatch={dispatch}
                         />
-                        <hr className="border-dashed border-[#333741] my-4" />
+                        <hr className="border-dashed border-[#D0D5DD] my-4" />
                         <OpKitButton
                           opAmount={0.5 * multiplier}
                           existing={suiExisting}
