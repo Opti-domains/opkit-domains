@@ -2,52 +2,79 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/infinity-op-circle.png" />
+    <link rel="icon" type="image/svg+xml" href="/fav.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>OPKit Domains</title>
 
-    <meta property="og:title"       content="OPKit Domains" />
+    <meta property="og:title" content="OPKit Domains" />
 
-    <meta name="description"          content="Register your .opkit domains and claim reward on Rollkit" />
-    <meta property="og:description"   content="Register your .opkit domains and claim reward on Rollkit" />
-    <meta name="twitter:description"  content="Register your .opkit domains and claim reward on Rollkit"/>
-    
-    <meta property="og:image"   content="https://opkit.opti.domains/images/OPKitBanner.png" />
-    <meta name="twitter:image"  content="https://opkit.opti.domains/images/OPKitBanner.png"/>
+    <meta
+      name="description"
+      content="Register your .opkit domains and claim reward on Rollkit"
+    />
+    <meta
+      property="og:description"
+      content="Register your .opkit domains and claim reward on Rollkit"
+    />
+    <meta
+      name="twitter:description"
+      content="Register your .opkit domains and claim reward on Rollkit"
+    />
 
-    <meta name="twitter:image:alt" content="OPKit Domains"/>
-    <meta name="twitter:card" content="summary_large_image"/>
-    <meta name="twitter:site" content="@optidomains"/>
+    <meta
+      property="og:image"
+      content="https://opkit.opti.domains/images/OPKitBanner.png"
+    />
+    <meta
+      name="twitter:image"
+      content="https://opkit.opti.domains/images/OPKitBanner.png"
+    />
+
+    <meta name="twitter:image:alt" content="OPKit Domains" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@optidomains" />
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1MEKH4YXPS"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-1MEKH4YXPS"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-      gtag('config', 'G-1MEKH4YXPS');
+      gtag("config", "G-1MEKH4YXPS");
     </script>
 
     <script type="text/javascript">
-      (function(c,l,a,r,i,t,y){
-          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      (function (c, l, a, r, i, t, y) {
+        c[a] =
+          c[a] ||
+          function () {
+            (c[a].q = c[a].q || []).push(arguments);
+          };
+        t = l.createElement(r);
+        t.async = 1;
+        t.src = "https://www.clarity.ms/tag/" + i;
+        y = l.getElementsByTagName(r)[0];
+        y.parentNode.insertBefore(t, y);
       })(window, document, "clarity", "script", "m3pjg03x11");
     </script>
-    
+
     <script>
       // Referral system
       if (window.location.hash) {
-        let username = window.location.hash
+        let username = window.location.hash;
         if (username) {
-          username = username.substring(1)
-          if (username.indexOf('.') == -1) {
-            username = username + '.town'
+          username = username.substring(1);
+          if (username.indexOf(".") == -1) {
+            username = username + ".town";
           }
-          window.localStorage.setItem("OPTIDOMAINS_REFERRER", username)
+          window.localStorage.setItem("OPTIDOMAINS_REFERRER", username);
         }
       }
     </script>
